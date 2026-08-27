@@ -1,0 +1,11 @@
+Patch v1.4.3
+
+Extra static-review fixes after v1.4.2:
+1. Added recordsToTable.m to centralize robust batch record table conversion.
+2. runBatchFields.m now calls recordsToTable(records) instead of repeating struct2table logic.
+3. summarizeBatchResults.m now uses local NaN-safe mean/std/min helpers instead of relying on nanflag support.
+4. plotBatchStatistics.m now uses string-safe filtering and field grouping.
+5. plotBatchStatistics.m now falls back to subplot if tiledlayout is unavailable.
+6. saveResults.m now uses struct2table(...,'AsArray',true) for best_metrics export.
+
+This version should be safer for single-run batches, multi-run batches, and slightly older MATLAB releases.

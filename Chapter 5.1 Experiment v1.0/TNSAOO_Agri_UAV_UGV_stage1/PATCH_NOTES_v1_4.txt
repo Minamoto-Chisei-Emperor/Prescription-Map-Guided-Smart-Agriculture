@@ -1,0 +1,26 @@
+Patch v1.4
+
+Main changes:
+1. Integrated an original-AOO-formula-adapted update into tnsaooOptimizer.m.
+   - Original AOO is single-objective continuous.
+   - This version replaces Best_X with a Pareto-archive elite reference.
+   - Random-key decoding, non-dominated sorting, archive management, and crowding pruning are retained.
+
+2. Updated thinkingInnovation.m using uploaded TIS logic.
+   - IE comes from the Pareto archive.
+   - IM uses pi.*IE.*rand.
+   - DOK is implemented with normalized progress for numerical stability.
+
+3. Added batch experiment framework:
+   - runBatchFields.m
+   - listFields2Benchmark.m
+   - makeBatchRecord.m
+   - makeFailedRecord.m
+   - summarizeBatchResults.m
+   - plotBatchStatistics.m
+
+4. Added config parameters:
+   - cfg.alg.useOriginalAOOUpdate
+   - cfg.alg.enableTIS
+   - cfg.alg.tisMode
+   - cfg.batch.*

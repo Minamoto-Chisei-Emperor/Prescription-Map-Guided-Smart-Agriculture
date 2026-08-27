@@ -1,0 +1,13 @@
+Patch v1.4.4
+
+Static review hardening after v1.4.3:
+1. v1.4.3 full package was basically usable, but the v1.4.3 patch package was not self-contained if applied over an older v1.4.x folder.
+2. v1.4.4 patch package now includes all batch-related files, including batchRecordTemplate, appendBatchRecord, standardizeBatchRecord, makeBatchRecord, makeFailedRecord, and recordsToTable.
+3. Added safeGetReport.m so error logging is more compatible across MATLAB versions.
+4. Replaced erase(...) with strrep(...) in runBatchFields.m for broader MATLAB compatibility.
+5. Removed extractBefore dependency in makeBatchRecord.m and listFields2Benchmark.m.
+6. Updated manifest.json to v1.4.4.
+
+Recommended use:
+- Prefer the full v1.4.4 package.
+- If using the patch, apply it to v1.4.0 or later; it is now much safer than the v1.4.3 patch.

@@ -1,0 +1,22 @@
+Patch v1.3
+
+Added:
+1. detectAndRepairConflicts.m
+   - Ignores initial UAV/UGV co-location at the depot.
+   - Reports rawMinDistance and effective minDistance separately.
+   - Keeps waiting-time conflict repair as the stage-1 approximation.
+
+2. plotEnvironment.m and plotPaths.m
+   - Fixed color scheme.
+   - Cleaner legends using explicit graphics handles.
+   - Text-label offsets and white background for readability.
+
+3. saveResults.m
+   - Saves best_metrics_*.csv.
+   - Saves best_schedule_*.csv.
+
+4. runSingleCase.m
+   - Fast single-field test script for debugging and figure tuning.
+
+5. config.m
+   - Added conflict.ignoreInitialTime, conflict.ignoreDepotRadius, and plot.labelOffset.

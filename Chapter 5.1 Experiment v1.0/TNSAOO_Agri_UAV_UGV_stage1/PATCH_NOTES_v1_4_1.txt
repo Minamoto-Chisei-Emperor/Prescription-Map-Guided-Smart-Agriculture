@@ -1,0 +1,17 @@
+Patch v1.4.1
+
+Fixed:
+1. runBatchFields.m no longer fails with:
+   "Subscripted assignment between dissimilar structures"
+   / "在不同结构体之间进行下标赋值。"
+
+Cause:
+- Successful and failed batch records could have slightly different struct layouts
+  or MATLAB could treat an intermediate failed assignment as a dissimilar structure.
+
+Solution:
+- Added a fixed batch record template.
+- Added appendBatchRecord.m and standardizeBatchRecord.m.
+- Rewrote makeBatchRecord.m and makeFailedRecord.m to fill the same template.
+- runBatchFields.m now appends records through appendBatchRecord().
+- Exception reports are saved as error_run_*.txt for debugging.

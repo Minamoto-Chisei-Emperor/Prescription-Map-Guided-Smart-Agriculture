@@ -1,0 +1,14 @@
+Patch v1.4.2
+
+Fixed:
+1. struct2table scalar-record error:
+   "输入结构体为标量，但其字段的行数不同。如果您想创建一个包含一行的表，请将 'AsArray' 设置为 true。"
+
+Cause:
+- When only one batch record exists, struct2table(records) treats a scalar struct's
+  field contents as table variables and complains about different character/string lengths.
+
+Solution:
+- Use struct2table(records, 'AsArray', true).
+- Store all text fields as string scalars in batchRecordTemplate, makeBatchRecord, and makeFailedRecord.
+- Updated summarizeBatchResults to handle string variables robustly.

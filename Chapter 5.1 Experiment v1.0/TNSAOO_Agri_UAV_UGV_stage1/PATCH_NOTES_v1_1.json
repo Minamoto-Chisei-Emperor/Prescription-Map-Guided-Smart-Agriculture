@@ -1,0 +1,7 @@
+{
+  "version": "stage1_v1_1",
+  "fixed": [
+    "generateEnvironment > buildGrid: vectorized isinterior query to support MATLAB versions requiring vector input.",
+    "createCircularZone: removed duplicated 0/2pi vertex to reduce polyshape repeated-vertex warnings."
+  ]
+}

@@ -1,0 +1,22 @@
+Patch v1.5
+
+Added ablation/baseline experiment framework:
+1. runAblationBatch.m
+2. getExperimentVariants.m
+3. applyExperimentVariant.m
+4. runIndependentPlanningBaseline.m
+5. makeAblationRecord.m
+6. recordsTableAppend.m
+7. summarizeAblationResults.m
+8. plotAblationStatistics.m
+
+Default comparison methods:
+- FullTNSAOO: original-AOO-adapted update + TIS.
+- NoTIS: original-AOO-adapted update without TIS.
+- SimpleAOO: stage-1 simplified AOO-inspired update + TIS.
+- Independent: deterministic natural order baseline with nearest active refill and no upper-layer optimization.
+
+Notes:
+- The Independent baseline is intentionally simple. It is not a full planner; it is a no-upper-layer-optimization reference.
+- Start with cfg.ablation.numFields=5 and cfg.ablation.seeds=[2026].
+- Increase fields/seeds after the pipeline is verified.
