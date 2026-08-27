@@ -1,0 +1,31 @@
+Chapter 5.2 Representative Cases v1.0
+
+Purpose:
+Generate the figures and table needed for Section 5.2 Representative Case Study.
+
+Representative fields:
+- ee_field_9.wkt
+- lt_field_258.wkt
+- lt_field_137.wkt
+- nl_field_54.wkt
+
+Entry script:
+runChapter52RepresentativeCases.m
+
+Outputs:
+- case_01_scenario.png ... case_04_scenario.png
+- case_01_paths.png ... case_04_paths.png
+- figure_ch5_2_representative_scenarios.png
+- figure_ch5_2_representative_paths.png
+- figure_ch5_2_pareto_convergence_case_01.png
+- representative_case_results.csv
+- chapter5_2_workspace.mat
+
+Figure improvements:
+- localized prescription regions are generated as irregular patches rather than only circles;
+- combined 2x2 scenario and path figures are generated;
+- Pareto/convergence figure is redesigned:
+  * normalized 2D Pareto archive distribution;
+  * drift represented by color;
+  * selected compromise solution highlighted;
+  * normalized convergence curves for the three objectives.

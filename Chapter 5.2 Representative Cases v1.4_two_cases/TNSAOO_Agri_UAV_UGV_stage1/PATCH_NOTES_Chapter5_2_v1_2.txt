@@ -1,0 +1,37 @@
+Chapter 5.2 Representative Cases v1.2
+
+Critical corrections and upgrades:
+
+1. Same-type prescription patch non-overlap
+   - Spraying patches are prevented from overlapping other spraying patches.
+   - Fertilization patches are prevented from overlapping other fertilization patches.
+   - Spraying and fertilization patches are allowed to overlap, because the
+     same local area may require both pesticide application and fertilization.
+
+2. Obstacle exclusion
+   - Obstacle regions are generated first.
+   - The operable region is computed as real field boundary minus obstacles.
+   - Prescription patches, crop rows, refill stations, and depot are generated
+     only inside the obstacle-free operable region.
+
+3. Lower-layer planning upgrade
+   - UAV transfers use a grid-based any-angle Theta*-style path planner.
+   - UGV transfers use a row-constrained grid A* path planner.
+   - Both planners avoid obstacle regions and field exterior.
+   - Coverage strips are generated inside obstacle-free prescription patches.
+
+4. Geometry validation
+   - representative_case_results.csv now reports:
+     geometryValid
+     sprayObstacleOverlap
+     fertObstacleOverlap
+     spraySameTypeOverlap
+     fertSameTypeOverlap
+     refillObstacleViolations
+     depotObstacleViolation
+
+Important honesty note:
+This version is a much stronger lower-layer implementation than the earlier
+straight-line transfer prototype. However, it is still a MATLAB simulation
+implementation of grid-based Theta*/row-constrained A*, not a full continuous
+vehicle-dynamics Hybrid A* with Reeds-Shepp curves.

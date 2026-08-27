@@ -1,0 +1,28 @@
+Chapter 5.2 Representative Cases v1.4_two_cases
+
+Purpose:
+Supplemental rerun version requested for Section 5.2. This version only runs:
+- Case 1: ee_field_9.wkt
+- Case 2: lt_field_119.wkt
+
+Reason for update:
+1. ee_field_9 contains an evident internal tree/woodland patch in the satellite image.
+   The WKT boundary does not fully prevent task generation in that internal
+   non-croppable region. This version adds a fixed known obstacle for that
+   tree patch and subtracts it from the operable region.
+2. lt_field_137 was too slow and produced many polyshape geometry warnings.
+   It is replaced by lt_field_119.
+3. All normal outputs are still saved:
+   - individual scenario figures
+   - individual path figures
+   - combined scenario figure
+   - combined path figure
+   - Pareto/convergence figure
+   - representative_case_results.csv
+   - chapter5_2_workspace.mat
+
+Preserved from v1.3_fast:
+- obstacle-free task generation;
+- spraying-spraying and fertilization-fertilization non-overlap;
+- spraying-fertilization overlap allowed;
+- fast lightweight obstacle-aware transfer planner.

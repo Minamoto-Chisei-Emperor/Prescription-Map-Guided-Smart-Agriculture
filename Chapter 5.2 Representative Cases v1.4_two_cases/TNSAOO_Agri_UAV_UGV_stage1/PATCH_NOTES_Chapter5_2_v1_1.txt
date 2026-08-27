@@ -1,0 +1,21 @@
+Chapter 5.2 Representative Cases v1.1
+
+Critical correction:
+The previous version could generate spraying/fertilization prescription patches overlapping obstacle regions, and straight transfer paths could cross obstacles. This was logically inconsistent because obstacle regions should not contain crops and UGV/UAV ground-projection transfer paths should not enter obstacle regions.
+
+Fixes:
+1. Obstacles are generated first.
+2. The operable/croppable region is computed as:
+   field boundary minus obstacle regions.
+3. Depot, refill stations, prescription patches, crop rows, and demand maps are generated only inside this operable region.
+4. UAV and UGV transfer segments use a lightweight obstacle-aware visibility planner.
+5. Coverage paths are generated only inside prescription patches that have already been clipped to the obstacle-free operable region.
+
+New helper files:
+- buildOperablePolygon.m
+- isPointInFreeSpace.m
+- isSegmentInFreeSpace.m
+- planTransferPath.m
+
+Remaining simplification:
+The transfer planner is still a lightweight visibility-graph approximation. It fixes the obvious obstacle-crossing problem, but it is not yet the full adaptive Theta*/Hybrid A* lower-layer planner described as a later high-fidelity module.

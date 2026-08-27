@@ -1,0 +1,21 @@
+Chapter 5.2 Representative Cases v1.3_fast
+
+Purpose:
+Restore the fast lower-layer transfer planner for practical Chapter 5.2 figure generation, while preserving the important geometry corrections from v1.2.
+
+Kept from v1.2:
+- Obstacles are generated before prescription patches.
+- The operable region is field boundary minus obstacles.
+- Prescription patches, crop rows, refill stations, and depot are generated only in the obstacle-free operable region.
+- Spraying patches do not overlap other spraying patches.
+- Fertilization patches do not overlap other fertilization patches.
+- Spraying and fertilization patches are still allowed to overlap.
+- Geometry validation fields remain in representative_case_results.csv.
+
+Changed from v1.2:
+- Removed slow grid-based Theta*/row-A* transfer from the active path planner.
+- Restored fast lightweight obstacle-aware visibility transfers via planTransferPath.
+- This version should run much faster than v1.2.
+
+Important:
+This is the recommended version for Chapter 5.2 figure generation if v1.2 is too slow.
