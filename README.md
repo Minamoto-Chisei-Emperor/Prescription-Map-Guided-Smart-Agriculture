@@ -29,7 +29,7 @@ Most existing agricultural path-planning studies optimize aerial spraying or gro
 ### 1. Why coordination matters / 为什么需要协同
 
 <p align="center">
-  <img src="./assets/figures/01_independent_vs_coordinated.png" width="92%" alt="Independent and coordinated UAV-UGV operation modes">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/01_independent_vs_coordinated.png" width="92%" alt="Independent and coordinated UAV-UGV operation modes">
 </p>
 
 Independent routes may be individually feasible while still causing redundant travel, poorly synchronized resupply, waiting and air-ground interference. The project therefore treats UAV and UGV planning as a coupled system.
@@ -37,7 +37,7 @@ Independent routes may be individually feasible while still causing redundant tr
 ### 2. Bi-level planning framework / 双层规划框架
 
 <p align="center">
-  <img src="./assets/figures/02_bilevel_framework.png" width="92%" alt="Prescription-map-guided bi-level framework">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/02_bilevel_framework.png" width="92%" alt="Prescription-map-guided bi-level framework">
 </p>
 
 The upper layer makes discrete system-level decisions. The lower layer converts those decisions into executable heterogeneous paths and returns feasibility and operational feedback.
@@ -47,7 +47,7 @@ The upper layer makes discrete system-level decisions. The lower layer converts 
 ### 3. Upper-level multi-objective scheduling / 上层多目标调度
 
 <p align="center">
-  <img src="./assets/figures/03_upper_tnsaoo_flow.png" width="78%" alt="TNSAOO upper-level flowchart">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/03_upper_tnsaoo_flow.png" width="78%" alt="TNSAOO upper-level flowchart">
 </p>
 
 TNSAOO combines random-key encoding, heterogeneous decoding, non-dominated sorting, an external Pareto archive, crowding-distance maintenance and a Thinking Innovation Strategy (TIS) for task-scheduling search.
@@ -55,7 +55,7 @@ TNSAOO combines random-key encoding, heterogeneous decoding, non-dominated sorti
 ### 4. Lower-level path generation / 下层异构路径生成
 
 <p align="center">
-  <img src="./assets/figures/04_lower_path_planning.png" width="78%" alt="Lower-level heterogeneous path planning flowchart">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/04_lower_path_planning.png" width="78%" alt="Lower-level heterogeneous path planning flowchart">
 </p>
 
 The manuscript-level design uses prescription-map-guided adaptive Theta* for UAV transitions and row-constrained Hybrid A* for UGV motion, followed by trajectory-level safety checks.
@@ -63,7 +63,7 @@ The manuscript-level design uses prescription-map-guided adaptive Theta* for UAV
 ### 5. Air-ground conflict correction / 空地冲突修正
 
 <p align="center">
-  <img src="./assets/figures/05_conflict_correction.png" width="92%" alt="Air-ground conflict detection and correction">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/05_conflict_correction.png" width="92%" alt="Air-ground conflict detection and correction">
 </p>
 
 Timestamped trajectories are checked for proximity conflicts. Waiting, speed adjustment or local replanning can be used to restore the required safety distance.
@@ -73,7 +73,7 @@ Timestamped trajectories are checked for proximity conflicts. Waiting, speed adj
 ### Real boundaries, simulated prescription scenarios / 真实地块边界与仿真处方场景
 
 <p align="center">
-  <img src="./assets/figures/06_real_boundary_to_scenario.png" width="92%" alt="From real field boundary to synthetic prescription scenario">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/06_real_boundary_to_scenario.png" width="92%" alt="From real field boundary to synthetic prescription scenario">
 </p>
 
 The experiments use real farmland parcel boundaries from Fields2Benchmark. Because the benchmark provides parcel geometry rather than measured pest, nutrient or crop-row maps, localized prescription patches, obstacles, crop rows, refill candidates and depots are generated synthetically inside the real boundaries.
@@ -83,12 +83,12 @@ The experiments use real farmland parcel boundaries from Fields2Benchmark. Becau
 ### Representative field scenarios / 典型地块场景
 
 <p align="center">
-  <img src="./assets/figures/07_case1_scenario.png" width="47%" alt="Case 1 prescription scenario">
-  <img src="./assets/figures/08_case2_scenario.png" width="47%" alt="Case 2 prescription scenario">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/07_case1_scenario.png" width="47%" alt="Case 1 prescription scenario">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/08_case2_scenario.png" width="47%" alt="Case 2 prescription scenario">
 </p>
 <p align="center">
-  <img src="./assets/figures/09_case3_scenario.png" width="47%" alt="Case 3 prescription scenario">
-  <img src="./assets/figures/10_case4_scenario.png" width="47%" alt="Case 4 prescription scenario">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/09_case3_scenario.png" width="47%" alt="Case 3 prescription scenario">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/10_case4_scenario.png" width="47%" alt="Case 4 prescription scenario">
 </p>
 
 The four cases cover different field sizes, boundary shapes, internal non-operational areas and task distributions across Estonia, Lithuania and the Netherlands.
@@ -96,12 +96,12 @@ The four cases cover different field sizes, boundary shapes, internal non-operat
 ### Optimized UAV-UGV paths / 优化后的协同路径
 
 <p align="center">
-  <img src="./assets/figures/11_case1_paths.png" width="47%" alt="Case 1 optimized paths">
-  <img src="./assets/figures/12_case2_paths.png" width="47%" alt="Case 2 optimized paths">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/11_case1_paths.png" width="47%" alt="Case 1 optimized paths">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/12_case2_paths.png" width="47%" alt="Case 2 optimized paths">
 </p>
 <p align="center">
-  <img src="./assets/figures/13_case3_paths.png" width="47%" alt="Case 3 optimized paths">
-  <img src="./assets/figures/14_case4_paths.png" width="47%" alt="Case 4 optimized paths">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/13_case3_paths.png" width="47%" alt="Case 3 optimized paths">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/14_case4_paths.png" width="47%" alt="Case 4 optimized paths">
 </p>
 
 ### Batch validation / 多地块批量验证
@@ -120,19 +120,19 @@ The manuscript reports 30 real farmland boundaries and 90 randomized prescriptio
 | Conflict-repair waiting time | 1.07 s |
 
 <p align="center">
-  <img src="./assets/figures/15_batch_objectives.png" width="92%" alt="Distribution of batch objective values">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/15_batch_objectives.png" width="92%" alt="Distribution of batch objective values">
 </p>
 
 Across the 90 batch experiments, all scenarios generated feasible collaborative plans. In 96.7% of experiments, the detected air-ground conflict count did not exceed one.
 
 <p align="center">
-  <img src="./assets/figures/16_area_cost_relationships.png" width="92%" alt="Field area and collaborative-operation costs">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/16_area_cost_relationships.png" width="92%" alt="Field area and collaborative-operation costs">
 </p>
 
 The results show a clear positive relationship between field area and operational cost, while boundary morphology and task distribution explain variation among fields of similar area.
 
 <p align="center">
-  <img src="./assets/figures/17_conflict_statistics.png" width="78%" alt="Air-ground conflict and waiting-time statistics">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/17_conflict_statistics.png" width="78%" alt="Air-ground conflict and waiting-time statistics">
 </p>
 
 ### Algorithm comparison / 多目标算法对比
@@ -140,10 +140,10 @@ The results show a clear positive relationship between field area and operationa
 The comparison package evaluates TNSAOO against NSGA-II, MOPSO, NSWOA and MOEA/D under a shared scenario, encoding, lower-level evaluation and computational budget.
 
 <p align="center">
-  <img src="./assets/figures/18_algorithm_quality.png" width="78%" alt="HV and IGD comparison">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/18_algorithm_quality.png" width="78%" alt="HV and IGD comparison">
 </p>
 <p align="center">
-  <img src="./assets/figures/19_algorithm_compromise.png" width="92%" alt="Compromise-solution objective comparison">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/19_algorithm_compromise.png" width="92%" alt="Compromise-solution objective comparison">
 </p>
 
 The paper interprets TNSAOO and NSGA-II as competitive overall Pareto-search methods, rather than claiming universal dominance by one optimizer.
@@ -151,16 +151,16 @@ The paper interprets TNSAOO and NSGA-II as competitive overall Pareto-search met
 ### Ablation and sensitivity / 消融与敏感性分析
 
 <p align="center">
-  <img src="./assets/figures/20_ablation.png" width="82%" alt="Ablation comparison">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/20_ablation.png" width="82%" alt="Ablation comparison">
 </p>
 
 The ablation study separates the effect of the TIS refinement mechanism from the effect of explicit joint UAV-UGV scheduling.
 
 <p align="center">
-  <img src="./assets/figures/21_tis_sensitivity.png" width="92%" alt="TIS probability sensitivity">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/21_tis_sensitivity.png" width="92%" alt="TIS probability sensitivity">
 </p>
 <p align="center">
-  <img src="./assets/figures/22_safety_distance_sensitivity.png" width="92%" alt="Air-ground safety distance sensitivity">
+  <img src="https://raw.githubusercontent.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture/refs/heads/main/assets/figures/22_safety_distance_sensitivity.png" width="92%" alt="Air-ground safety distance sensitivity">
 </p>
 
 The sensitivity experiments examine TIS probability values from 0.35 to 0.95 and air-ground safety distances from 2 m to 10 m. The results indicate that moderate-to-high TIS intensity and moderate safety distances often provide a practical trade-off, but the best setting remains scenario-dependent.
@@ -228,3 +228,4 @@ Research interests: precision agriculture, agricultural robotics, UAV-UGV collab
 ## License
 
 No open-source license has been selected yet. Until a license is added, please contact the author before redistribution or commercial use.
+
