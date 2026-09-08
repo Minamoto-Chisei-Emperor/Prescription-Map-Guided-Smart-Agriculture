@@ -3,71 +3,110 @@
 **Prescription-Map-Guided Bi-Level Multi-Objective Path Planning for UAV-UGV Collaborative Spraying and Fertilization in Smart Agriculture**
 
 <p align="center">
-  <a href="https://github.com/Minamoto-Chisei-Emperor/Prescription-Map-Guided-Smart-Agriculture">
-    <img src="https://img.shields.io/badge/MATLAB-R2021b%2B-0076A8?logo=mathworks&logoColor=white" alt="MATLAB">
-  </a>
-  <img src="https://img.shields.io/badge/Research%20prototype-Stage--1-orange" alt="Research prototype">
-  <img src="https://img.shields.io/badge/Precision%20agriculture-UAV--UGV-2E8B57" alt="Precision agriculture">
+  <img src="https://img.shields.io/badge/MATLAB-R2021b%2B-0076A8?logo=mathworks&logoColor=white" alt="MATLAB">
+  <img src="https://img.shields.io/badge/Precision%20Agriculture-UAV--UGV-2E8B57" alt="Precision agriculture">
+  <img src="https://img.shields.io/badge/Study-Simulation--based-orange" alt="Simulation based study">
 </p>
 
-> A reproducible MATLAB research prototype for coordinating UAV spraying and UGV fertilization under prescription-map demands, heterogeneous vehicle constraints, multi-objective optimization, and air-ground safety requirements.
+> A research project on prescription-map-guided coordination of UAV spraying and UGV fertilization in irregular agricultural fields.
 
-本项目面向智慧农业中的变量施药与变量施肥任务，研究如何在不规则真实农田边界内，对无人机（UAV）与无人地面车辆（UGV）进行协同任务排序、路径规划、补给点选择和时空冲突处理。
+本项目研究智慧农业中的无人机（UAV）精准喷洒与无人地面车辆（UGV）精准施肥协同规划问题。项目将真实农田地块边界、局部处方任务、车辆约束、补给决策和空地时空安全统一到一个双层多目标规划框架中。
 
-## Why this project / 研究问题
+## Project at a glance / 项目概览
 
-Most agricultural planning studies optimize aerial spraying or ground fertilization separately. This project treats them as one heterogeneous air-ground system and jointly considers:
+Most existing agricultural path-planning studies optimize aerial spraying or ground fertilization separately. This work models them as one heterogeneous air-ground system and jointly optimizes:
 
-- localized spraying and fertilization demands from prescription maps;
-- UAV payload, battery, flight and drift-related costs;
-- UGV crop-row, obstacle and turning constraints;
-- refill-station activation and task ordering;
-- time-window synchronization and air-ground conflict avoidance;
-- the trade-off among makespan, weighted energy consumption and pesticide-drift penalty.
+- prescription-map-driven local spraying and fertilization;
+- UAV and UGV task sequences and refill-point activation;
+- makespan, weighted energy consumption and pesticide-drift penalty;
+- field boundaries, obstacles, crop-row constraints and vehicle mobility;
+- timestamped air-ground synchronization and conflict correction.
 
-现有研究通常将无人机喷洒和地面机器人施肥分开规划。本项目将二者建模为统一的空地协同系统，同时考虑处方图任务需求、载荷与电量、农田障碍、作物行方向、补给点、同步约束和农药漂移风险。
+现有研究往往分别规划无人机喷洒和地面机器人作业。本研究将两类平台放在同一个协同系统中，联合考虑处方图任务需求、任务顺序、补给点选择、完工时间、能耗、漂移风险以及空地冲突。
 
-## Research architecture / 方法框架
+## From research question to system design / 从问题到系统设计
 
-```text
-Real farmland boundary + simulated prescription scenario
-                    |
-                    v
-      Upper level: TNSAOO multi-objective scheduling
-      - UAV/UGV task sequences
-      - refill-station activation
-      - Pareto archive and constraint handling
-                    |
-                    v
-      Lower level: heterogeneous path generation
-      - UAV coverage strips and prescription-guided transitions
-      - UGV row-constrained fertilization paths
-      - timestamped trajectories
-                    |
-                    v
-      Air-ground conflict detection and wait/local-repair correction
-                    |
-                    v
-      Makespan | weighted energy | drift penalty | coverage | safety
-```
+### 1. Why coordination matters / 为什么需要协同
 
-The manuscript-level framework uses a prescription-map-guided adaptive Theta* planner for UAV transitions, a row-constrained Hybrid A* planner for UGV motion, dynamic UAV-load energy modelling, and time-window conflict correction. The public repository currently contains a staged implementation of these ideas; see [Implementation status](#implementation-status--当前实现状态).
+<p align="center">
+  <img src="assets/figures/01_independent_vs_coordinated.png" width="92%" alt="Independent and coordinated UAV-UGV operation modes">
+</p>
 
-## What is included / 仓库内容
+Independent routes may be individually feasible while still causing redundant travel, poorly synchronized resupply, waiting and air-ground interference. The project therefore treats UAV and UGV planning as a coupled system.
 
-| Package | Purpose | Main entry point |
-|---|---|---|
-| `Chapter 5.1 Experiment v1.0` | Real field boundary and synthetic prescription scenarios | `runChapter51Experiment.m` |
-| `Chapter 5.2 Representative Cases v1.4_two_cases` | Four representative field cases, paths and Pareto/convergence figures | `runChapter52RepresentativeCases.m` |
-| `Chapter 5.3 Batch Validation v1.0` | Multi-field batch validation and summary statistics | `runChapter53BatchValidation.m` or `runBatchFields.m` |
-| `Chapter 5.4 Algorithm Comparison v1.0.zip` | TNSAOO, NSGA-II, MOPSO, NSWOA and MOEA/D comparison | `runChapter54AlgorithmComparison.m` after extraction |
-| `Chapter_5_5_Ablation_Sensitivity_Project_v1_1.zip` | Ablation study, TIS sensitivity and safety-distance sensitivity | `runChapter55AblationSensitivity.m` after extraction |
+### 2. Bi-level planning framework / 双层规划框架
 
-The code is organized around reusable MATLAB functions for environment generation, WKT parsing, scheduling, path planning, objective evaluation, conflict detection, result export and publication-style plotting.
+<p align="center">
+  <img src="assets/figures/02_bilevel_framework.png" width="92%" alt="Prescription-map-guided bi-level framework">
+</p>
 
-## Selected results reported in the manuscript / 论文报告的代表性结果
+The upper layer makes discrete system-level decisions. The lower layer converts those decisions into executable heterogeneous paths and returns feasibility and operational feedback.
 
-The simulation study uses 30 real farmland boundaries from the Fields2Benchmark data and 90 randomized prescription scenarios. Reported batch statistics include:
+上层负责任务分配、访问顺序和补给点激活；下层负责将上层结果转化为具体的 UAV/UGV 路径，并反馈覆盖率、路径代价和可行性。
+
+### 3. Upper-level multi-objective scheduling / 上层多目标调度
+
+<p align="center">
+  <img src="assets/figures/03_upper_tnsaoo_flow.png" width="78%" alt="TNSAOO upper-level flowchart">
+</p>
+
+TNSAOO combines random-key encoding, heterogeneous decoding, non-dominated sorting, an external Pareto archive, crowding-distance maintenance and a Thinking Innovation Strategy (TIS) for task-scheduling search.
+
+### 4. Lower-level path generation / 下层异构路径生成
+
+<p align="center">
+  <img src="assets/figures/04_lower_path_planning.png" width="78%" alt="Lower-level heterogeneous path planning flowchart">
+</p>
+
+The manuscript-level design uses prescription-map-guided adaptive Theta* for UAV transitions and row-constrained Hybrid A* for UGV motion, followed by trajectory-level safety checks.
+
+### 5. Air-ground conflict correction / 空地冲突修正
+
+<p align="center">
+  <img src="assets/figures/05_conflict_correction.png" width="92%" alt="Air-ground conflict detection and correction">
+</p>
+
+Timestamped trajectories are checked for proximity conflicts. Waiting, speed adjustment or local replanning can be used to restore the required safety distance.
+
+## Experimental story / 实验设计与结果
+
+### Real boundaries, simulated prescription scenarios / 真实地块边界与仿真处方场景
+
+<p align="center">
+  <img src="assets/figures/06_real_boundary_to_scenario.png" width="92%" alt="From real field boundary to synthetic prescription scenario">
+</p>
+
+The experiments use real farmland parcel boundaries from Fields2Benchmark. Because the benchmark provides parcel geometry rather than measured pest, nutrient or crop-row maps, localized prescription patches, obstacles, crop rows, refill candidates and depots are generated synthetically inside the real boundaries.
+
+实验使用 Fields2Benchmark 的真实农田地块边界。需要特别区分：地块边界是真实数据，而处方区域、障碍、作物行、补给候选点和基地位置是用于构造协同任务的仿真数据。
+
+### Representative field scenarios / 典型地块场景
+
+<p align="center">
+  <img src="assets/figures/07_case1_scenario.png" width="47%" alt="Case 1 prescription scenario">
+  <img src="assets/figures/08_case2_scenario.png" width="47%" alt="Case 2 prescription scenario">
+</p>
+<p align="center">
+  <img src="assets/figures/09_case3_scenario.png" width="47%" alt="Case 3 prescription scenario">
+  <img src="assets/figures/10_case4_scenario.png" width="47%" alt="Case 4 prescription scenario">
+</p>
+
+The four cases cover different field sizes, boundary shapes, internal non-operational areas and task distributions across Estonia, Lithuania and the Netherlands.
+
+### Optimized UAV-UGV paths / 优化后的协同路径
+
+<p align="center">
+  <img src="assets/figures/11_case1_paths.png" width="47%" alt="Case 1 optimized paths">
+  <img src="assets/figures/12_case2_paths.png" width="47%" alt="Case 2 optimized paths">
+</p>
+<p align="center">
+  <img src="assets/figures/13_case3_paths.png" width="47%" alt="Case 3 optimized paths">
+  <img src="assets/figures/14_case4_paths.png" width="47%" alt="Case 4 optimized paths">
+</p>
+
+### Batch validation / 多地块批量验证
+
+The manuscript reports 30 real farmland boundaries and 90 randomized prescription scenarios. The reported mean statistics are:
 
 | Metric | Mean |
 |---|---:|
@@ -80,155 +119,88 @@ The simulation study uses 30 real farmland boundaries from the Fields2Benchmark 
 | Air-ground conflict count | 0.36 |
 | Conflict-repair waiting time | 1.07 s |
 
-Across the 90 batch experiments, 100% of scenarios generated feasible collaborative plans, and 96.7% of experiments had no more than one detected air-ground conflict. These numbers are manuscript simulation results, not claims of field or hardware validation.
+<p align="center">
+  <img src="assets/figures/15_batch_objectives.png" width="92%" alt="Distribution of batch objective values">
+</p>
 
-## Quick start / 快速运行
+Across the 90 batch experiments, all scenarios generated feasible collaborative plans. In 96.7% of experiments, the detected air-ground conflict count did not exceed one.
 
-### Requirements
+<p align="center">
+  <img src="assets/figures/16_area_cost_relationships.png" width="92%" alt="Field area and collaborative-operation costs">
+</p>
 
-- MATLAB R2021b or newer is recommended.
-- No third-party MATLAB toolbox is required by the stage-1 scripts beyond functions available in a standard MATLAB installation; some advanced extensions may benefit from additional toolboxes.
-- The repository does not include the full dataset because of file-size and redistribution constraints.
+The results show a clear positive relationship between field area and operational cost, while boundary morphology and task distribution explain variation among fields of similar area.
 
-### 1. Obtain the field-boundary data
+<p align="center">
+  <img src="assets/figures/17_conflict_statistics.png" width="78%" alt="Air-ground conflict and waiting-time statistics">
+</p>
 
-The code expects Fields2Benchmark WKT files under a project-local `data/wkt/` directory. Copy the data from your local dataset directory into the corresponding experiment folder, or create a symbolic/junction link if preferred.
+### Algorithm comparison / 多目标算法对比
 
-Expected layout:
+The comparison package evaluates TNSAOO against NSGA-II, MOPSO, NSWOA and MOEA/D under a shared scenario, encoding, lower-level evaluation and computational budget.
 
-```text
-<experiment-root>/
-├─ main.m
-├─ config.m
-├─ src/
-└─ data/
-   └─ wkt/
-      ├─ ee_field_9.wkt
-      ├─ lt_field_258.wkt
-      └─ ...
-```
+<p align="center">
+  <img src="assets/figures/18_algorithm_quality.png" width="78%" alt="HV and IGD comparison">
+</p>
+<p align="center">
+  <img src="assets/figures/19_algorithm_compromise.png" width="92%" alt="Compromise-solution objective comparison">
+</p>
 
-The tracked `data/README_data.md` contains the same data-placement note. The original local working copy used for development was:
+The paper interprets TNSAOO and NSGA-II as competitive overall Pareto-search methods, rather than claiming universal dominance by one optimizer.
+
+### Ablation and sensitivity / 消融与敏感性分析
+
+<p align="center">
+  <img src="assets/figures/20_ablation.png" width="82%" alt="Ablation comparison">
+</p>
+
+The ablation study separates the effect of the TIS refinement mechanism from the effect of explicit joint UAV-UGV scheduling.
+
+<p align="center">
+  <img src="assets/figures/21_tis_sensitivity.png" width="92%" alt="TIS probability sensitivity">
+</p>
+<p align="center">
+  <img src="assets/figures/22_safety_distance_sensitivity.png" width="92%" alt="Air-ground safety distance sensitivity">
+</p>
+
+The sensitivity experiments examine TIS probability values from 0.35 to 0.95 and air-ground safety distances from 2 m to 10 m. The results indicate that moderate-to-high TIS intensity and moderate safety distances often provide a practical trade-off, but the best setting remains scenario-dependent.
+
+## Code organization / 代码组织
+
+| Package | Focus | Entry point |
+|---|---|---|
+| `Chapter 5.1 Experiment v1.0` | Boundary and prescription-scenario figures | `runChapter51Experiment.m` |
+| `Chapter 5.2 Representative Cases v1.4_two_cases` | Representative field cases and paths | `runChapter52RepresentativeCases.m` |
+| `Chapter 5.3 Batch Validation v1.0` | Multi-field validation and statistics | `runChapter53BatchValidation.m` |
+| `Chapter 5.4 Algorithm Comparison v1.0.zip` | TNSAOO vs. four multi-objective baselines | Extract, then run `runChapter54AlgorithmComparison.m` |
+| `Chapter_5_5_Ablation_Sensitivity_Project_v1_1.zip` | Ablation and parameter sensitivity | Extract, then run `runChapter55AblationSensitivity.m` |
+
+The repository contains research snapshots from different chapter stages. Some files are prototypes, intermediate versions or release bundles rather than a single polished software package.
+
+## Minimal reproduction / 最小复现说明
+
+1. Install MATLAB R2021b or newer.
+2. Place the Fields2Benchmark WKT files under the experiment package's `data/wkt/` directory.
+3. Open the desired experiment folder in MATLAB.
+4. Run its chapter entry script or `runSingleCase` for a quick check.
+5. Inspect the timestamped `results/` directory.
+
+The full dataset is intentionally not committed to GitHub. The local development copy used the following machine-specific directory:
 
 ```text
 D:\桌面\郭奉孝\新Paper-智慧农业空地协同\GitHub\data
 ```
 
-This path is machine-specific and is provided only as a local reference; do not hard-code it in MATLAB scripts intended for other machines.
-
-### 2. Run a fast single-case check
-
-Open one experiment folder in MATLAB and set it as the current folder:
-
-```matlab
-runSingleCase
-```
-
-For a normal stage-1 run:
-
-```matlab
-main
-```
-
-Results are written to a timestamped folder under `results/`.
-
-### 3. Run the chapter experiments
-
-```matlab
-% Chapter 5.1: field boundary and prescription scenario
-runChapter51Experiment
-
-% Chapter 5.2: representative cases
-runChapter52RepresentativeCases
-
-% Chapter 5.3: batch validation
-runChapter53BatchValidation
-
-% Chapter 5.4: algorithm comparison
-% Extract Chapter 5.4 ZIP first, then run from its MATLAB project root
-runChapter54AlgorithmComparison
-
-% Chapter 5.5: ablation and sensitivity analysis
-% Extract Chapter 5.5 ZIP first, then run from its MATLAB project root
-runChapter55AblationSensitivity
-```
-
-For debugging, reduce population size and iteration count in `config.m`, for example:
-
-```matlab
-cfg.alg.popSize = 8;
-cfg.alg.maxIter = 5;
-```
-
-Formal runs should use the chapter-specific settings documented in the corresponding package README files.
-
-## Data and reproducibility / 数据与复现说明
-
-The field geometries are based on real parcel boundaries from Fields2Benchmark. The public dataset used in the experiments is not bundled in this repository because it is too large for convenient GitHub distribution and may be subject to dataset-specific sharing conditions.
-
-Important distinction:
-
-- real data: farmland parcel boundaries in WKT format;
-- simulated data: prescription patches, crop-row structure, obstacles, refill candidates and depot locations generated inside the real boundaries;
-- simulation outputs: paths, schedules, objective values, coverage statistics and conflict metrics generated by MATLAB.
-
-This distinction is important when interpreting the paper results: the study is simulation-based and does not yet constitute field hardware validation.
-
-## Implementation status / 当前实现状态
-
-This repository is intentionally transparent about its development stage.
-
-Implemented or supported by the current staged codebase:
-
-- real-field WKT parsing and longitude/latitude to local planar coordinates;
-- synthetic localized prescription scenarios inside valid field regions;
-- UAV and UGV task sequencing with random-key/ROV-style decoding;
-- Pareto archive, non-dominated sorting, crowding distance and TNSAOO-style updates;
-- UAV coverage-strip generation and UGV row-guided coverage;
-- obstacle-aware transfer paths in the stage-1 experiment packages;
-- timestamped air-ground conflict detection and waiting-based correction;
-- batch validation, algorithm comparison, ablation and parameter sensitivity workflows;
-- CSV/MAT result export and publication-style figure generation.
-
-The following manuscript-level components are still being refined or simplified in parts of the public prototype:
-
-- full prescription-map-guided adaptive Theta* implementation;
-- full kinematic Hybrid A* and Reeds-Shepp turning correction;
-- dynamic UAV mass decay and rotor-momentum energy integration;
-- detailed UGV terrain/soil-resistance energy modelling;
-- complete local replanning under repeated air-ground conflicts;
-- hardware-in-the-loop and field experiments.
-
-The separation between implemented modules and research targets is deliberate so that the repository remains reproducible and technically honest.
-
-## Project structure / 项目结构
-
-```text
-Prescription-Map-Guided-Smart-Agriculture/
-├─ Chapter 5.1 Experiment v1.0/
-├─ Chapter 5.2 Representative Cases v1.4_two_cases/
-├─ Chapter 5.3 Batch Validation v1.0/
-├─ Chapter 5.4 Algorithm Comparison v1.0.zip
-├─ Chapter_5_5_Ablation_Sensitivity_Project_v1_1.zip
-└─ README.md
-```
-
-Each experiment package contains a `main.m`/chapter entry script, `config.m`, a `src/` function library, a `data/` note and a `results/` output convention. The ZIP packages are preserved as self-contained release snapshots for the later chapters.
+Use a project-local relative path on other machines.
 
 ## Paper / 论文
 
 **Prescription-Map-Guided Bi-Level Multi-Objective Path Planning for UAV-UGV Collaborative Spraying and Fertilization in Smart Agriculture**  
 Authors: Shiyang Li, Jisong Lv, Yuchen Lu and Yuxuan Zhang.
 
-The manuscript PDF/Word source is not redistributed here by default. Please add the final paper link, DOI or preprint URL below when available:
-
-```text
-Paper / DOI / Preprint: [add link here]
-```
+Paper / DOI / preprint link: **to be added**
 
 ## Citation / 引用
-
-If you use this code or build on the modelling framework, please cite the associated paper once the bibliographic information is finalized:
 
 ```bibtex
 @article{li_prescription_map_guided,
@@ -239,9 +211,13 @@ If you use this code or build on the modelling framework, please cite the associ
 }
 ```
 
-## Contact / 联系方式
+## Scope and current status / 研究范围与当前状态
 
-For research collaboration, reproducibility questions or PhD/MPhil supervision discussions, please contact:
+This repository documents a simulation-based research project and its evolving MATLAB implementation. It should be read as a transparent research record, not as a production-ready agricultural autonomy stack. The reported results are simulation results; hardware-in-the-loop and field validation remain future work.
+
+本仓库记录的是一个持续演进中的仿真研究项目及其 MATLAB 实现，不是面向生产部署的完整农业自动驾驶软件。论文中的实验结果属于仿真结果，硬件在环测试和真实田间验证属于后续工作。
+
+## Contact / 联系方式
 
 ```text
 Name: [Your Name]
@@ -251,28 +227,4 @@ Research interests: precision agriculture, agricultural robotics, UAV-UGV collab
 
 ## License
 
-No open-source license has been selected yet. Until a license is added, please treat the code as research material and contact the author before redistribution or commercial use.
-
----
-
-## 中文项目简介
-
-这是一个面向智慧农业空地协同作业的 MATLAB 研究代码仓库，围绕“处方图引导的无人机喷洒 + 无人地面车辆施肥”展开。项目使用真实农田地块边界，并在其内部生成仿真的局部施药/施肥处方区域、障碍、作物行、补给候选点和作业基地，从而研究不规则农田中的协同调度与路径规划。
-
-项目的核心特点包括：
-
-- 上层使用 TNSAOO 进行 UAV/UGV 任务顺序与补给点激活决策；
-- 下层分别生成 UAV 覆盖路径和 UGV 作物行约束路径；
-- 联合优化完工时间、加权能耗和漂移惩罚；
-- 使用时间戳轨迹检测空地接近风险，并通过等待或局部修正处理冲突；
-- 提供代表性案例、批量验证、算法对比、消融实验和敏感性分析。
-
-如果你是潜在导师，可以优先查看以下内容：
-
-1. `Chapter 5.2 Representative Cases...`：了解典型农田场景、路径和 Pareto 结果；
-2. `Chapter 5.3 Batch Validation...`：了解多地块稳定性与规模适应性；
-3. `Chapter 5.4 Algorithm Comparison...`：了解与 NSGA-II、MOPSO、NSWOA、MOEA/D 的公平对比；
-4. `Chapter 5.5 Ablation...`：了解 TIS 策略和安全距离参数的作用；
-5. `src/`：查看环境生成、目标函数、路径规划、冲突检测和结果导出等实现。
-
-数据集没有直接上传 GitHub。真实地块边界可以按照上面的 `data/wkt/` 结构放置；处方图、障碍和作物行等部分在当前研究中属于仿真生成内容。README 中已经明确区分了真实数据、仿真数据和论文仿真结果，方便你把仓库发给导师时保持学术表述准确。
+No open-source license has been selected yet. Until a license is added, please contact the author before redistribution or commercial use.
